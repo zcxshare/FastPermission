@@ -155,7 +155,25 @@ public    class ZcxPermissionConfig   {
 
 }
 ~~~
+当然,如果你还有什么特殊需要也可以直接用工具类PermissionUtils
+~~~
+PermissionUtils.requestPermissions(context, permissions, requestCode, new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+               
+            }
 
+            @Override
+            public void onPermissionCanceled(PermissionCanceledBean bean) {
+                
+            }
+
+            @Override
+            public void onPermissionDenied(PermissionDeniedBean bean) {
+                
+            }
+        });
+~~~
 
 # 依赖
 在你的根目录的build.gradle中添加配置[com.github.xiaoXiangGuo:ZcxAspectj:1.0.1](https://github.com/xiaoXiangGuo/ZcxAspectj)如下:
