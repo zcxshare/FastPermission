@@ -22,10 +22,10 @@ import java.lang.reflect.Method;
 /**
  * author:  zhouchaoxiang
  * date:    2019/10/15
- * explain: 
+ * explain:
  */
 @Aspect
-public    class PermissionActivityAspect extends PermissionBaseAspect {
+public class PermissionActivityAspect extends PermissionBaseAspect {
     @Pointcut("execution(* android.app.Activity.onCreate(android.os.Bundle)) && @target(com.zcx.zcx_permission_runtime.annotation.NeedPermission)")
     public void pointcutOnActivityCreate() {
     }
@@ -40,13 +40,13 @@ public    class PermissionActivityAspect extends PermissionBaseAspect {
 
         if (mObject instanceof Context) {
             mContext = (Context) mObject;
-        }else {
+        } else {
             mContext = ZcxPermission.getInstance().getContext();
         }
 
         String[] permissions = mNeedPermission.value();
         if (PermissionUtils.checkPermissions(mContext, permissions)) {
-            if (mObject instanceof PermissionListener){
+            if (mObject instanceof PermissionListener) {
                 ((PermissionListener) mObject).onPermissionGranted();
             }
             return;
@@ -84,14 +84,14 @@ public    class PermissionActivityAspect extends PermissionBaseAspect {
         PermissionUtils.requestPermissions(context, needPermission.value(), needPermission.requestCode(), new PermissionListener() {
             @Override
             public void onPermissionGranted() {
-                if (object instanceof PermissionListener){
+                if (object instanceof PermissionListener) {
                     ((PermissionListener) object).onPermissionGranted();
                 }
             }
 
             @Override
             public void onPermissionCanceled(PermissionCanceledBean bean) {
-                if (object instanceof PermissionListener){
+                if (object instanceof PermissionListener) {
                     ((PermissionListener) object).onPermissionCanceled(bean);
                 }
                 if (needPermission.isAllowExecution()) {
@@ -108,14 +108,14 @@ public    class PermissionActivityAspect extends PermissionBaseAspect {
                         isExecuteCanceled = executeCanceled(context, configObject, methods1, bean, canceledKey);
                     }
                 }
-                if (!isExecuteCanceled){
+                if (!isExecuteCanceled) {
                     finishActivity(object);
                 }
             }
 
             @Override
             public void onPermissionDenied(PermissionDeniedBean bean) {
-                if (object instanceof PermissionListener){
+                if (object instanceof PermissionListener) {
                     ((PermissionListener) object).onPermissionDenied(bean);
                 }
                 if (needPermission.isAllowExecution()) {
@@ -132,7 +132,7 @@ public    class PermissionActivityAspect extends PermissionBaseAspect {
                         isExecuteDenied = executeDenied(context, configObject, methods1, bean, deniedKey);
                     }
                 }
-                if (!isExecuteDenied){
+                if (!isExecuteDenied) {
                     finishActivity(object);
                 }
             }
@@ -140,7 +140,7 @@ public    class PermissionActivityAspect extends PermissionBaseAspect {
     }
 
     private void finishActivity(Object object) {
-        if (object instanceof Activity){
+        if (object instanceof Activity) {
             ((Activity) object).finish();
         }
     }

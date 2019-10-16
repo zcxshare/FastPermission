@@ -169,6 +169,13 @@ buildscript {
         classpath 'com.android.tools.build:gradle:3.0.1'
         classpath 'com.github.xiaoXiangGuo:ZcxAspectj:1.0.1'
     }
+}
+allprojects {
+    repositories {
+        maven { url "https://jitpack.io" }
+    }
+}
+
 ~~~
 然后在你的app的build.gradle中使用插件和依赖
 ~~~

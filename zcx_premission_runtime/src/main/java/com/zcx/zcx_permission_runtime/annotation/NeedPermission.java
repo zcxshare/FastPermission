@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
  * explain:
  */
 @Documented
-@Target({ElementType.METHOD,ElementType.TYPE})
+@Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface NeedPermission {
 
@@ -45,7 +45,6 @@ public @interface NeedPermission {
      * When permission is denied and checked no longer reminded
      */
     String permissionDenied() default "";
-
 
 
 }

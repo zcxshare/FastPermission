@@ -17,12 +17,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
         classpath 'com.github.xiaoXiangGuo:ZcxAspectj:1.0.1'
-//        classpath 'org.aspectj:aspectjtools:1.9.4'
-//        classpath "gradle.plugin.aspectj:gradle-aspectj:0.1.6"
-//        classpath 'com.github.franticn:gradle_plugin_android_aspectjx:2.0.6'
-//        classpath 'com.hujiang.aspectjx:gradle-android-plugin-aspectjx:2.0.5'
-//        classpath 'org.gradle.api.plugins:gradle-nexus-plugin:0.7'
-        
+
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files

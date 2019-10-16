@@ -1,10 +1,11 @@
 package com.zcx.zcx_permission_runtime.exception;
+
 /**
  * author:  zhouchaoxiang
  * date:    2019/9/29
- * explain: 
+ * explain:
  */
-public    class ZcxPermissionException extends RuntimeException   {
+public class ZcxPermissionException extends RuntimeException {
     public ZcxPermissionException() {
     }
 

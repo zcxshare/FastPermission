@@ -13,12 +13,12 @@ import com.zcx.zcx_permission_runtime.bean.PermissionDeniedBean;
 /**
  * author:  zhouchaoxiang
  * date:    2019/10/8
- * explain: 
+ * explain:
  */
-public    class ZcxPermissionConfig   {
+public class ZcxPermissionConfig {
 
     @PermissionBefore(Manifest.permission.CAMERA)
-    public void before(final PermissionBeforeBean beforeBean){
+    public void before(final PermissionBeforeBean beforeBean) {
         new android.support.v7.app.AlertDialog.Builder(beforeBean.getContext())
                 .setTitle("来自配置文件,我们需要相机权限来正常拍照")
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -37,7 +37,7 @@ public    class ZcxPermissionConfig   {
     }
 
     @PermissionCanceled(Manifest.permission.CAMERA)
-    public void cancel(final PermissionCanceledBean canceledBean){
+    public void cancel(final PermissionCanceledBean canceledBean) {
         new android.support.v7.app.AlertDialog.Builder(canceledBean.getContext())
                 .setTitle("来自配置文件,我们需要相机权限,请同意")
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -55,7 +55,7 @@ public    class ZcxPermissionConfig   {
     }
 
     @PermissionDenied(Manifest.permission.CAMERA)
-    public void denied(final PermissionDeniedBean deniedBean){
+    public void denied(final PermissionDeniedBean deniedBean) {
         new android.support.v7.app.AlertDialog.Builder(deniedBean.getContext())
                 .setTitle("来自配置文件,我们需要权限,是否设置")
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {

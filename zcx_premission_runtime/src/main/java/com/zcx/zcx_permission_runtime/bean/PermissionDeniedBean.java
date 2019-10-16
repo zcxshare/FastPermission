@@ -11,9 +11,9 @@ import java.util.List;
 /**
  * author:  zhouchaoxiang
  * date:    2019/10/8
- * explain: 
+ * explain:
  */
-public    class PermissionDeniedBean extends PermissionBaseBean   {
+public class PermissionDeniedBean extends PermissionBaseBean {
 
     private List<String> mCancelList;
     private List<String> mDeniedList;
@@ -24,15 +24,15 @@ public    class PermissionDeniedBean extends PermissionBaseBean   {
         mDeniedList = deniedList;
     }
 
-    public void againRequest(){
+    public void againRequest() {
         getAspect().requestPermission();
     }
 
-    public void toSettingActivity(){
+    public void toSettingActivity() {
         SettingUtils.go2Setting(getContext());
     }
 
-    public int getRequestCode(){
+    public int getRequestCode() {
         return getNeedPermission().requestCode();
     }
 

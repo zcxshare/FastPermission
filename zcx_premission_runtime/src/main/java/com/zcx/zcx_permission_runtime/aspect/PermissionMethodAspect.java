@@ -22,10 +22,10 @@ import java.lang.reflect.Method;
 /**
  * author:  zhouchaoxiang
  * date:    2019/10/15
- * explain: 
+ * explain:
  */
 @Aspect
-public    class PermissionMethodAspect extends PermissionBaseAspect {
+public class PermissionMethodAspect extends PermissionBaseAspect {
     @Pointcut("execution(@com.zcx.zcx_permission_runtime.annotation.NeedPermission * * (..)) " +
             "&& @annotation(com.zcx.zcx_permission_runtime.annotation.NeedPermission)")
     public void requestPermissionPointcut() {

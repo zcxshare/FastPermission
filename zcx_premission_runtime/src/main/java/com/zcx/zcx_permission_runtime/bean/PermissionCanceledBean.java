@@ -20,11 +20,11 @@ public class PermissionCanceledBean extends PermissionBaseBean {
         mCancelList = cancelList;
     }
 
-    public void againRequest(){
+    public void againRequest() {
         getAspect().requestPermission();
     }
 
-    public int getRequestCode(){
+    public int getRequestCode() {
         return getNeedPermission().requestCode();
     }
 

@@ -20,7 +20,9 @@ import com.zcx.zcx_permission_runtime.listener.PermissionListener;
 /**
  * A login screen that offers login via email/password.
  */
-@NeedPermission(Manifest.permission.CAMERA)
+@NeedPermission(value = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+        requestBefore = Manifest.permission.CAMERA, permissionCanceled = Manifest.permission.CAMERA,
+        permissionDenied = Manifest.permission.CAMERA, isAllowExecution = true)
 public class CameraActivity extends Activity implements PermissionListener {
     private static final String TAG = "CameraActivity";
 
@@ -30,6 +32,7 @@ public class CameraActivity extends Activity implements PermissionListener {
     private Camera camera;
 
     private boolean mHasPermission = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +62,7 @@ public class CameraActivity extends Activity implements PermissionListener {
 
     @Override
     public void onPermissionGranted() {
-        mHasPermission =true;
+        mHasPermission = true;
         initCamera();
     }
 
@@ -74,7 +77,7 @@ public class CameraActivity extends Activity implements PermissionListener {
     }
 
     @PermissionBefore
-    public void before(final PermissionBeforeBean beforeBean){
+    public void before(final PermissionBeforeBean beforeBean) {
         new android.support.v7.app.AlertDialog.Builder(this)
                 .setTitle("我们需要相机权限来正常拍照")
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -91,7 +94,6 @@ public class CameraActivity extends Activity implements PermissionListener {
                 })
                 .show();
     }
-
 
     private void initCamera() {
         camera = getCameraInstance(CAMERA_ID);

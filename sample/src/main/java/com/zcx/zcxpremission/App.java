@@ -8,12 +8,12 @@ import com.zcx.zcxpremission.conf.ZcxPermissionConfig;
 /**
  * author:  zhouchaoxiang
  * date:    2019/10/7
- * explain: 
+ * explain:
  */
-public    class App extends Application {
+public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        ZcxPermission.getInstance().init(getApplicationContext(),new ZcxPermissionConfig());
+        ZcxPermission.getInstance().init(getApplicationContext(), new ZcxPermissionConfig());
     }
 }

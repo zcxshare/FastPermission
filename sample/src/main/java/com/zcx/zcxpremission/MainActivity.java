@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -22,7 +21,6 @@ import com.zcx.zcx_permission_runtime.bean.PermissionDeniedBean;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String TAG = "MainActivity";
     Button mBtContacts;
     Button mBtStartActivity;
 
@@ -39,34 +37,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-         if (v == mBtContacts){
+        if (v == mBtContacts) {
             onClickContacts();
-        }else if (v == mBtStartActivity){
+        } else if (v == mBtStartActivity) {
             Intent intent = new Intent(this, CameraActivity.class);
             startActivity(intent);
         }
 
     }
 
-    @NeedPermission(value = {Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE},
-            requestBefore = Manifest.permission.CAMERA,permissionCanceled = Manifest.permission.CAMERA,
-            permissionDenied = Manifest.permission.CAMERA,isAllowExecution = true)
+    @NeedPermission(value = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+            requestBefore = Manifest.permission.CAMERA, permissionCanceled = Manifest.permission.CAMERA,
+            permissionDenied = Manifest.permission.CAMERA, isAllowExecution = true)
     private void onClickContacts() {
-        Log.i(TAG, "onClickContacts: 被执行");
         FragmentManager fragmentManager = getFragmentManager();
         Fragment cameraFragment = fragmentManager.findFragmentByTag("camera");
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        if (cameraFragment ==null) {
+        if (cameraFragment == null) {
             fragmentTransaction.replace(R.id.sample_content_fragment, CameraPreviewFragment.newInstance(), "camera")
                     .addToBackStack("camera")
                     .commitAllowingStateLoss();
-        }else {
+        } else {
             fragmentTransaction.show(cameraFragment);
         }
     }
 
     @PermissionBefore
-    public void before(final PermissionBeforeBean beforeBean){
+    public void before(final PermissionBeforeBean beforeBean) {
         new android.support.v7.app.AlertDialog.Builder(this)
                 .setTitle("我们需要相机权限来正常拍照")
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -85,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @PermissionCanceled
-    public void cancel(final PermissionCanceledBean canceledBean){
+    public void cancel(final PermissionCanceledBean canceledBean) {
         new android.support.v7.app.AlertDialog.Builder(this)
                 .setTitle("我们需要权限,是否同意一下")
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -103,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @PermissionDenied
-    public void denied(final PermissionDeniedBean deniedBean){
+    public void denied(final PermissionDeniedBean deniedBean) {
         new android.support.v7.app.AlertDialog.Builder(this)
                 .setTitle("我们需要权限,是否设置")
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {

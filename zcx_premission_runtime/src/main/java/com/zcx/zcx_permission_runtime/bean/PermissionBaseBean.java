@@ -9,9 +9,9 @@ import com.zcx.zcx_permission_runtime.aspect.PermissionBaseAspect;
 /**
  * author:  zhouchaoxiang
  * date:    2019/9/29
- * explain: 
+ * explain:
  */
-public    class PermissionBaseBean {
+public class PermissionBaseBean {
     private Context mContext;
     private PermissionBaseAspect mAspect;
     private NeedPermission mNeedPermission;
@@ -46,7 +46,7 @@ public    class PermissionBaseBean {
         mNeedPermission = needPermission;
     }
 
-    public String[] getPermissions(){
+    public String[] getPermissions() {
         return mNeedPermission.value();
     }
 }
