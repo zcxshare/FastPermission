@@ -182,6 +182,6 @@ allprojects {
 apply plugin: 'com.android.application'
 apply plugin: 'zcx-aspectj-plugin'
 dependencies {
-    implementation 'com.github.xiaoXiangGuo:ZcxPremission:1.0.0'
+    implementation 'com.github.xiaoXiangGuo:ZcxPremission:1.0.1'
 }
 ~~~
