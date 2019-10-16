@@ -5,19 +5,19 @@ ZcxPremission为权限请求框架，基于aspectj实现，使用注解即可请
 NeedPermission支持在所有的方法中使用和activity的类上使用,提供了权限前操作，权限后的处理(权限拒绝或不再提醒)等功能。
 # 使用
 ### 使用到的类:
-  1. ZcxPermission:用于初始化的类
-  1. @NeedPermission:请求权限的注解,可以作用于任何类的方法和activity类上,拥有参数:
+  1. **ZcxPermission**:用于初始化的类
+  1. **@NeedPermission**:请求权限的注解,可以作用于任何类的方法和activity类上,拥有参数:
 - value:要请求的权限
 - requestCode:请求码
 - isAllowExecution:当权限被拒绝是否继续执行
 - requestBefore:请求前调用的方法,和@PermissionBefore配合使用,会调用带有相同参数的被PermissionBefore注解的方法
 - permissionCanceled:请求被取消的方法,和@PermissionCanceled配合使用,会调用带有相同参数的被PermissionCanceled注解的方法
 - permissionDenied:请求被拒绝的方法,和@permissionDenied配合使用,会调用带有相同参数的被permissionDenied注解的方法
-1. @PermissionBefore:请求权限前的操作，可以在请求权限的本类中和配置类中使用，被注解的方法的参数只能是PermissionBeforeBean
+1. **@PermissionBefore**:请求权限前的操作，可以在请求权限的本类中和配置类中使用，被注解的方法的参数只能是PermissionBeforeBean
 ,与NeedPermission联合使用,通过requestBefore匹配
-1. @PermissionCanceled:权限被取消(用户点击禁止权限)时调用的方法,可以在请求权限的本类中和配置类中使用
+1. **@PermissionCanceled**:权限被取消(用户点击禁止权限)时调用的方法,可以在请求权限的本类中和配置类中使用
 ，被注解的方法的参数只能是PermissionCanceledBean,与Neddpermission联合使用,通过permissionCanceled匹配
-1. @PermissionDenied:权限被取消(用户勾选禁止后不再提示并点击禁止权限)时调用的方法,可以在请求权限的本类中和配置类中使用
+1. **@PermissionDenied**:权限被取消(用户勾选禁止后不再提示并点击禁止权限)时调用的方法,可以在请求权限的本类中和配置类中使用
 ，被注解的方法的参数只能是PermissionDeniedBean,与Neddpermission联合使用,通过permissionDenied匹配
 
 ### 使用方式
@@ -203,3 +203,4 @@ dependencies {
     implementation 'com.github.xiaoXiangGuo:ZcxPremission:1.0.1'
 }
 ~~~
+如果好用请点个star,有问题请issues
