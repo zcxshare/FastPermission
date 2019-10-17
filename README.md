@@ -200,7 +200,7 @@ allprojects {
 apply plugin: 'com.android.application'
 apply plugin: 'zcx-aspectj-plugin'
 dependencies {
-    implementation 'com.github.xiaoXiangGuo:ZcxPremission:1.0.1'
+    implementation 'com.github.xiaoXiangGuo:ZcxPermission:1.0.1'
 }
 ~~~
 如果好用请点个star,有问题请issues
