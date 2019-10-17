@@ -1,7 +1,7 @@
-# ZcxPremission
+# ZcxPermission
 [![](https://www.jitpack.io/v/xiaoXiangGuo/ZcxPremission.svg)](https://www.jitpack.io/#xiaoXiangGuo/ZcxPremission)
 
-ZcxPremission为权限请求框架，基于aspectj实现，使用注解即可请求权限,简单方便。
+ZcxPermission为权限请求框架，基于aspectj实现，使用注解即可请求权限,简单方便。
 NeedPermission支持在所有的方法中使用和activity的类上使用,提供了权限前操作，权限后的处理(权限拒绝或不再提醒)等功能。
 # 使用
 ### 使用到的类:
