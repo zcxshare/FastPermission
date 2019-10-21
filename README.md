@@ -32,9 +32,7 @@ NeedPermission支持在所有的方法中使用和activity的类上使用,提供
   
 方法中使用注解时:
 ~~~
-@NeedPermission(value = {Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE},
-            requestBefore = Manifest.permission.CAMERA,permissionCanceled = Manifest.permission.CAMERA,
-            permissionDenied = Manifest.permission.CAMERA,isAllowExecution = true)
+@NeedPermission({Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE})
     private void onClickContacts() {
         FragmentManager fragmentManager = getFragmentManager();
         Fragment cameraFragment = fragmentManager.findFragmentByTag("camera");
@@ -48,6 +46,7 @@ NeedPermission支持在所有的方法中使用和activity的类上使用,提供
         }
     }
 ~~~
+以上就是简单使用方式,一个注释搞定,是不是很简单,如果有更多需求,请继续往下看
 
 activity中使用注解时:
 ~~~
