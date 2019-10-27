@@ -202,4 +202,17 @@ dependencies {
     implementation 'com.github.xiaoXiangGuo:ZcxPermission:1.0.1'
 }
 ~~~
+
+添加忽略文件
+~~~
+-keep class com.zcx.zcx_permission_runtime.annotation.* {*;}
+-keepclassmembers class pagecom.zcx.zcx_permission_runtime.aspect.* {*;}
+-keep @com.zcx.zcx_permission_runtime.annotation.NeedPermission class * {*;}
+-keep class * {
+    @com.zcx.zcx_permission_runtime.annotation.NeedPermission <fields>;
+}
+-keepclassmembers class * {
+    @com.zcx.zcx_permission_runtime.annotation.NeedPermission <methods>;
+}
+~~~
 如果好用请点个star,有问题请issues
