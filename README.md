@@ -1,5 +1,5 @@
 # FastPermission
-[![](https://www.jitpack.io/v/xiaoXiangGuo/FastPermission.svg)](https://www.jitpack.io/#xiaoXiangGuo/FastPermission)
+[![](https://jitpack.io/v/zcxshare/fast-permission.svg)](https://jitpack.io/#zcxshare/fast-permission)
 
 FastPermission为android权限请求框架，一个注解解决android权限请求,基于aspectj实现，使用注解即可请求权限,简单方便。
 NeedPermission支持在所有的方法中使用和activity的类上使用,提供了权限前操作，权限后的处理(权限拒绝或不再提醒)等功能。
