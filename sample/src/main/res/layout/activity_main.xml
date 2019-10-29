@@ -21,6 +21,12 @@
         android:layout_height="wrap_content"
         android:text="@string/show_contacts" />
 
+    <Button
+        android:id="@+id/button_presenter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="normal method" />
+
     <FrameLayout
         android:id="@+id/sample_content_fragment"
         android:layout_width="match_parent"

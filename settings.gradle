@@ -1,1 +1,1 @@
-include ':sample', ':zcx_premission_runtime'
+include ':sample', ':fast_permission_runtime'

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ZcxPremission</string>
+    <string name="app_name">FastPermission</string>
     <string name="back">Back</string>
     <string name="button_allow">Allow</string>
     <string name="button_deny">Deny</string>

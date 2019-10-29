@@ -49,6 +49,7 @@ deps.lifecycle = lifecycle
 deps.junit = 'junit:junit:4.12'
 
 deps.logger = 'com.orhanobut:logger:2.2.0'
+'com.github.zcxshare:fast-permission:1.0.1'
 deps.fillet_imageview = 'com.github.xiaoXiangGuo:FilletImageView:1.0.0'
 deps.recyclerview_helper = 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.42'
 deps.vlayout = 'com.alibaba.android:vlayout:1.2.8@aar'

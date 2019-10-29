@@ -3,10 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ZcxPremission.iml" filepath="$PROJECT_DIR$/ZcxPremission.iml" />
-      <module fileurl="file://E:\AndroidProject\ZcxPremission\sample\app.iml" filepath="E:\AndroidProject\ZcxPremission\sample\app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fast_permission_runtime/fast_permission_runtime.iml" filepath="$PROJECT_DIR$/fast_permission_runtime/fast_permission_runtime.iml" />
       <module fileurl="file://$PROJECT_DIR$/sample/sample.iml" filepath="$PROJECT_DIR$/sample/sample.iml" />
-      <module fileurl="file://E:\AndroidProject\ZcxPremission\zcx_aspectj_plugin\zcx_premission_plugin.iml" filepath="E:\AndroidProject\ZcxPremission\zcx_aspectj_plugin\zcx_premission_plugin.iml" />
-      <module fileurl="file://$PROJECT_DIR$/zcx_premission_runtime/zcx_premission_runtime.iml" filepath="$PROJECT_DIR$/zcx_premission_runtime/zcx_premission_runtime.iml" />
     </modules>
   </component>
 </project>

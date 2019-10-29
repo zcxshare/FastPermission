@@ -1,11 +1,11 @@
-# ZcxPermission
-[![](https://www.jitpack.io/v/xiaoXiangGuo/ZcxPremission.svg)](https://www.jitpack.io/#xiaoXiangGuo/ZcxPremission)
+# FastPermission
+[![](https://www.jitpack.io/v/xiaoXiangGuo/FastPermission.svg)](https://www.jitpack.io/#xiaoXiangGuo/FastPermission)
 
-ZcxPermission为权限请求框架，基于aspectj实现，使用注解即可请求权限,简单方便。
+FastPermission为android权限请求框架，一个注解解决android权限请求,基于aspectj实现，使用注解即可请求权限,简单方便。
 NeedPermission支持在所有的方法中使用和activity的类上使用,提供了权限前操作，权限后的处理(权限拒绝或不再提醒)等功能。
 # 使用
 ### 使用到的类:
-  1. **ZcxPermission**:用于初始化的类
+  1. **FastPermission**:用于初始化的类
   1. **@NeedPermission**:请求权限的注解,可以作用于任何类的方法和activity类上,拥有参数:
       - value:要请求的权限
       - requestCode:请求码
@@ -21,12 +21,12 @@ NeedPermission支持在所有的方法中使用和activity的类上使用,提供
 ，被注解的方法的参数只能是PermissionDeniedBean,与Neddpermission联合使用,通过permissionDenied匹配
 
 ### 使用方式
-  在你的Application的onCreate方法中使用ZcxPermission.getInstance().init()初始化,然后在需要权限的方法
-  ZcxPermissionConfig该类用于配置统一的权限前置操作、取消操作、拒绝操作的公共方法。
+  在你的Application的onCreate方法中使用FastPermission.getInstance().init()初始化,然后在需要权限的方法
+  FastPermissionConfig该类用于配置统一的权限前置操作、取消操作、拒绝操作的公共方法。
   ~~~
   public void onCreate() {
         super.onCreate();
-        ZcxPermission.getInstance().init(getApplicationContext(),new ZcxPermissionConfig());//ZcxPermissionConfig如果不用可设置为null
+        FastPermission.getInstance().init(getApplicationContext(),new FastPermissionConfig());//FastPermissionConfig如果不用可设置为null
     }
   ~~~
   
@@ -93,9 +93,9 @@ public class CameraActivity extends Activity implements PermissionListener {
 ｝
 ~~~
 
-ZcxPermissionConfig使用如下:
+FastPermissionConfig使用如下:
 ~~~
-public    class ZcxPermissionConfig   {
+public    class FastPermissionConfig   {
 
     @PermissionBefore(Manifest.permission.CAMERA)//该注解注解的方法参数只能是PermissionBeforeBean
     public void before(final PermissionBeforeBean beforeBean){
@@ -175,7 +175,7 @@ PermissionUtils.requestPermissions(context, permissions, requestCode, new Permis
 ~~~
 
 # 依赖
-在你的根目录的build.gradle中添加配置[com.github.xiaoXiangGuo:ZcxAspectj:1.0.1](https://github.com/xiaoXiangGuo/ZcxAspectj)如下:
+在你的根目录的build.gradle中添加配置[gradle-aspectj-plugin](https://github.com/zcxshare/gradle-aspectj-plugin)如下:
 ~~~
 buildscript {
  
@@ -184,7 +184,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
-        classpath 'com.github.xiaoXiangGuo:ZcxAspectj:1.0.1'
+        classpath 'com.github.zcxshare:gradle-aspectj-plugin:1.0.3'
     }
 }
 allprojects {
@@ -197,22 +197,20 @@ allprojects {
 然后在你的app的build.gradle中使用插件和依赖
 ~~~
 apply plugin: 'com.android.application'
-apply plugin: 'zcx-aspectj-plugin'
+apply plugin: 'aspectj-plugin'
 dependencies {
-    implementation 'com.github.xiaoXiangGuo:ZcxPermission:1.0.1'
+    implementation 'com.github.zcxshare:fast-permission:1.0.2'
 }
 ~~~
 
-添加忽略文件
+混淆时添加到app的混淆文件proguard-rules.pro中
 ~~~
--keep class com.zcx.zcx_permission_runtime.annotation.* {*;}
--keepclassmembers class pagecom.zcx.zcx_permission_runtime.aspect.* {*;}
--keep @com.zcx.zcx_permission_runtime.annotation.NeedPermission class * {*;}
--keep class * {
-    @com.zcx.zcx_permission_runtime.annotation.NeedPermission <fields>;
+-keepclasseswithmembers class * {
+@com.zcx.fast_permission_runtime.annotation.* <methods>;
 }
+
 -keepclassmembers class * {
-    @com.zcx.zcx_permission_runtime.annotation.NeedPermission <methods>;
+public android.content.Context getContext();
 }
 ~~~
-如果好用请点个star,有问题请issues
+有问题请issues哟,好用请点个star啦~~~
