@@ -46,6 +46,11 @@ NeedPermission支持在所有的方法中使用和activity的类上使用,提供
         }
     }
 ~~~
+别忘了在manifest.xml文件中还要加权限哟
+~~~
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+<uses-permission android:name="android.permission.CAMERA"/>
+~~~
 以上就是简单使用方式,一个注释搞定,是不是很简单,如果有更多需求,请继续往下看
 
 activity中使用注解时:
