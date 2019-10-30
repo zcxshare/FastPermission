@@ -207,7 +207,7 @@ allprojects {
 apply plugin: 'com.android.application'
 apply plugin: 'aspectj-plugin'
 dependencies {
-    implementation 'com.github.zcxshare:fast-permission:1.0.2'
+    implementation 'com.github.zcxshare:fast-permission:1.0.3'
 }
 ~~~
 
