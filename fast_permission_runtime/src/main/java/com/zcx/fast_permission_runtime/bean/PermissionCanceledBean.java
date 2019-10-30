@@ -20,6 +20,10 @@ public class PermissionCanceledBean extends PermissionBaseBean {
         mCancelList = cancelList;
     }
 
+    public void proceed() {
+        getAspect().proceed(false);
+    }
+
     public void againRequest() {
         getAspect().requestPermission();
     }

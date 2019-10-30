@@ -134,6 +134,8 @@ public    class FastPermissionConfig   {
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        canceledBean.proceed();
+                    }
                     }
                 })
                 .show();
@@ -152,6 +154,7 @@ public    class FastPermissionConfig   {
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        deniedBean.proceed();
                     }
                 })
                 .show();

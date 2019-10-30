@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import com.zcx.fast_permission_runtime.R;
 import com.zcx.fast_permission_runtime.bean.PermissionCanceledBean;
 import com.zcx.fast_permission_runtime.bean.PermissionDeniedBean;
+import com.zcx.fast_permission_runtime.exception.FastPermissionException;
 import com.zcx.fast_permission_runtime.listener.PermissionListener;
 import com.zcx.fast_permission_runtime.util.PermissionUtils;
 
@@ -63,8 +64,8 @@ public class PermissionRequestActivity extends Activity {
         mPermissions = getIntent().getStringArrayExtra(INTENT_PERMISSIONS);
         mRequestCode = getIntent().getIntExtra(INTENT_REQUEST_CODE, 0);
 
-        if (mPermissions == null) {
-            throw new NullPointerException("The permission requested is empty");
+        if (mPermissions == null || mPermissions.length == 0) {
+            throw new FastPermissionException("The permission requested is empty");
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

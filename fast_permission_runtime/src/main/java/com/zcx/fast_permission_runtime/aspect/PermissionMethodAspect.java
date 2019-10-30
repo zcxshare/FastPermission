@@ -7,6 +7,7 @@ import com.zcx.fast_permission_runtime.FastPermission;
 import com.zcx.fast_permission_runtime.annotation.NeedPermission;
 import com.zcx.fast_permission_runtime.bean.PermissionCanceledBean;
 import com.zcx.fast_permission_runtime.bean.PermissionDeniedBean;
+import com.zcx.fast_permission_runtime.exception.FastPermissionException;
 import com.zcx.fast_permission_runtime.listener.PermissionListener;
 import com.zcx.fast_permission_runtime.util.PermissionUtils;
 
@@ -34,11 +35,11 @@ public class PermissionMethodAspect extends PermissionBaseAspect {
         Method method = signature.getMethod();
         mNeedPermission = method.getAnnotation(NeedPermission.class);
         if (mNeedPermission == null) {
-            throw new NullPointerException("There is no NeedPermission annotation");
+            throw new FastPermissionException("There is no NeedPermission annotation");
         }
         mObject = joinPoint.getThis();
         if (mObject == null) {
-            throw new NullPointerException("object is null");
+            throw new FastPermissionException("object is null");
         }
 
         if (mObject instanceof Context) {
@@ -99,10 +100,6 @@ public class PermissionMethodAspect extends PermissionBaseAspect {
 
             @Override
             public void onPermissionCanceled(PermissionCanceledBean bean) {
-                if (needPermission.isAllowExecution()) {
-                    proceed(joinPoint);
-                    return;
-                }
                 String canceledKey = needPermission.permissionCanceled();
                 boolean isExecuteCanceled;
                 isExecuteCanceled = executeCanceled(context, object, methods, bean, canceledKey);
@@ -111,16 +108,15 @@ public class PermissionMethodAspect extends PermissionBaseAspect {
                     if (configObject == null) return;
                     Class<?> aClass1 = configObject.getClass();
                     Method[] methods1 = aClass1.getMethods();
-                    executeCanceled(context, configObject, methods1, bean, canceledKey);
+                    isExecuteCanceled = executeCanceled(context, configObject, methods1, bean, canceledKey);
+                }
+                if (needPermission.isAllowExecution() && !isExecuteCanceled) {
+                    proceed(joinPoint);
                 }
             }
 
             @Override
             public void onPermissionDenied(PermissionDeniedBean bean) {
-                if (needPermission.isAllowExecution()) {
-                    proceed(joinPoint);
-                    return;
-                }
                 String deniedKey = needPermission.permissionDenied();
                 boolean isExecuteDenied;
                 isExecuteDenied = executeDenied(context, object, methods, bean, deniedKey);
@@ -129,7 +125,10 @@ public class PermissionMethodAspect extends PermissionBaseAspect {
                     if (configObject == null) return;
                     Class<?> aClass1 = configObject.getClass();
                     Method[] methods1 = aClass1.getMethods();
-                    executeDenied(context, configObject, methods1, bean, deniedKey);
+                    isExecuteDenied = executeDenied(context, configObject, methods1, bean, deniedKey);
+                }
+                if (needPermission.isAllowExecution() && !isExecuteDenied){
+                    proceed(joinPoint);
                 }
             }
         });

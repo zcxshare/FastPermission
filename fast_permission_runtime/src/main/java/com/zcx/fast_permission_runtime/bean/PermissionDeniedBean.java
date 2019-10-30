@@ -24,6 +24,10 @@ public class PermissionDeniedBean extends PermissionBaseBean {
         mDeniedList = deniedList;
     }
 
+    public void proceed() {
+        getAspect().proceed(false);
+    }
+
     public void againRequest() {
         getAspect().requestPermission();
     }

@@ -2,6 +2,8 @@ package com.zcx.fast_permission_runtime;
 
 import android.content.Context;
 
+import com.zcx.fast_permission_runtime.exception.FastPermissionException;
+
 /**
  * author:  zhouchaoxiang
  * date:    2019/9/27
@@ -28,6 +30,9 @@ public class FastPermission {
     }
 
     public Context getContext() {
+        if (mContext == null){
+            throw new FastPermissionException("FastPermission is not initialized.Please call 'FastPermission.getInstance().init(this,null);' in the onCreate method in app's application");
+        }
         return mContext;
     }
 

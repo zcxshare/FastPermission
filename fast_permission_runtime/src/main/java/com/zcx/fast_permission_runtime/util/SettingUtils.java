@@ -7,6 +7,7 @@ import android.os.Build;
 import com.zcx.fast_permission_runtime.setting.ISetting;
 import com.zcx.fast_permission_runtime.setting.support.Default;
 import com.zcx.fast_permission_runtime.setting.support.HuaWei;
+import com.zcx.fast_permission_runtime.setting.support.Meizu;
 import com.zcx.fast_permission_runtime.setting.support.OPPO;
 import com.zcx.fast_permission_runtime.setting.support.ViVo;
 import com.zcx.fast_permission_runtime.setting.support.XiaoMi;
@@ -36,8 +37,19 @@ public class SettingUtils {
      * @param context context
      */
     public static void go2Setting(Context context) {
-        ISetting iSetting;
+        Intent intent = getSettingIntent(context);
+        if (intent == null) return;
+        try {
+            context.startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Default aDefault = new Default(context);
+            context.startActivity(aDefault.getSetting());
+        }
+    }
 
+    public static Intent getSettingIntent(Context context) {
+        ISetting iSetting;
         switch (Build.MANUFACTURER) {
             case MANUFACTURER_HUAWEI:
                 iSetting = new HuaWei(context);
@@ -52,21 +64,13 @@ public class SettingUtils {
                 iSetting = new XiaoMi(context);
                 break;
             case MANUFACTURER_MEIZU:
-                iSetting = new XiaoMi(context);
+                iSetting = new Meizu(context);
                 break;
             default:
                 iSetting = new Default(context);
                 break;
         }
-        Intent intent = iSetting.getSetting();
-        if (intent == null) return;
-        try {
-            context.startActivity(intent);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Default aDefault = new Default(context);
-            context.startActivity(aDefault.getSetting());
-        }
+        return iSetting.getSetting();
     }
 
 

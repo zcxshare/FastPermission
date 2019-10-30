@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 
 import com.zcx.fast_permission_runtime.FastPermission;
 import com.zcx.fast_permission_runtime.activity.PermissionRequestActivity;
+import com.zcx.fast_permission_runtime.exception.FastPermissionException;
 import com.zcx.fast_permission_runtime.listener.PermissionListener;
 
 
@@ -38,9 +39,12 @@ public class PermissionUtils {
 
     }
 
+    /**
+     * @return 所有都同意返回true 否则返回false
+     */
     public static boolean checkPermissions(Context context, String... permissions) {
         if (permissions == null || permissions.length == 0) {
-            throw new NullPointerException("The permission requested is empty");
+            throw new FastPermissionException("The permission requested is empty");
         }
         for (String permission : permissions) {
             if (!checkPermission(context, permission)) {
@@ -56,7 +60,7 @@ public class PermissionUtils {
 
     public static void requestPermissions(Context context,String[] permissions, int requestCode, PermissionListener listener) {
         if (permissions == null || permissions.length == 0) {
-            throw new NullPointerException("The permission requested is empty");
+            throw new FastPermissionException("The permission requested is empty");
         }
         PermissionRequestActivity.start(context, permissions, requestCode, listener);
     }
