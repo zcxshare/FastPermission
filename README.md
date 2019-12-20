@@ -191,7 +191,9 @@ buildscript {
         maven { url "https://jitpack.io" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
+        ...
+        //下面插件二选一,kotlin项目只能用第一个
+        classpath 'com.hujiang.aspectjx:gradle-android-plugin-aspectjx:2.0.8'
         classpath 'com.github.zcxshare:gradle-aspectj-plugin:1.0.3'
     }
 }
@@ -205,7 +207,10 @@ allprojects {
 然后在你的app的build.gradle中使用插件和依赖
 ~~~
 apply plugin: 'com.android.application'
-apply plugin: 'aspectj-plugin'
+//下面插件二选一
+apply plugin: 'aspectj-plugin'//对应classpath 'com.hujiang.aspectjx:gradle-android-plugin-aspectjx:2.0.8'
+apply plugin: 'aspectj-plugin'//对应classpath 'com.github.zcxshare:gradle-aspectj-plugin:1.0.3'
+
 dependencies {
     implementation 'com.github.zcxshare:fast-permission:1.0.3'
 }
