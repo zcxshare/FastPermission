@@ -208,7 +208,7 @@ allprojects {
 ~~~
 apply plugin: 'com.android.application'
 //下面插件二选一
-apply plugin: 'aspectj-plugin'//对应classpath 'com.hujiang.aspectjx:gradle-android-plugin-aspectjx:2.0.8'
+apply plugin: 'android-aspectjx'//对应classpath 'com.hujiang.aspectjx:gradle-android-plugin-aspectjx:2.0.8'
 apply plugin: 'aspectj-plugin'//对应classpath 'com.github.zcxshare:gradle-aspectj-plugin:1.0.3'
 
 dependencies {
