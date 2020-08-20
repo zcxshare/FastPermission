@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'aspectj-plugin'
 
 android {
     compileSdkVersion 28
@@ -19,8 +18,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
 }
 
 dependencies {
+    implementation 'org.aspectj:aspectjrt:1.9.5'
 }

@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
-apply plugin: 'aspectj-plugin'
+//apply plugin: 'aspectj-plugin'
+apply plugin: 'android-aspectjx'
 
 android {
     compileSdkVersion 28
@@ -20,6 +21,13 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+    aspectjx {
+        include 'com.zcx.fastpermission', 'com.zcx.fast_permission_runtime'
     }
 }
 

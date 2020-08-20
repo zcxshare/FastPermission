@@ -2,7 +2,6 @@ package com.zcx.fast_permission_runtime.aspect;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.zcx.fast_permission_runtime.annotation.NeedPermission;
 import com.zcx.fast_permission_runtime.annotation.PermissionBefore;
@@ -122,7 +121,6 @@ public abstract class PermissionBaseAspect {
     }
 
     protected void proceed(ProceedingJoinPoint joinPoint) {
-        Log.i("aaa", "proceed: ");
         try {
             joinPoint.proceed();
         } catch (Throwable throwable) {

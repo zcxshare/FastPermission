@@ -30,8 +30,15 @@ public class PermissionActivityAspect extends PermissionBaseAspect {
             "@target(com.zcx.fast_permission_runtime.annotation.NeedPermission)")
     public void adviceOnActivityCreate(final ProceedingJoinPoint joinPoint) throws Throwable {
         mJoinPoint = joinPoint;
-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-        mNeedPermission = (NeedPermission) signature.getDeclaringType().getAnnotation(NeedPermission.class);
+        try {
+            mNeedPermission = joinPoint.getTarget().getClass().getAnnotation(NeedPermission.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if(mNeedPermission == null){
+            MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+            mNeedPermission = (NeedPermission) signature.getDeclaringType().getAnnotation(NeedPermission.class);
+        }
         mObject = joinPoint.getTarget();
         proceed(joinPoint);
 

@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ZcxPremission.iml" filepath="$PROJECT_DIR$/ZcxPremission.iml" />
-      <module fileurl="file://$PROJECT_DIR$/fast_permission_runtime/fast_permission_runtime.iml" filepath="$PROJECT_DIR$/fast_permission_runtime/fast_permission_runtime.iml" />
-      <module fileurl="file://$PROJECT_DIR$/sample/sample.iml" filepath="$PROJECT_DIR$/sample/sample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ZcxPremission.iml" filepath="$PROJECT_DIR$/ZcxPremission.iml" group="ZcxPremission" />
+      <module fileurl="file://$PROJECT_DIR$/fast_permission_runtime/fast_permission_runtime.iml" filepath="$PROJECT_DIR$/fast_permission_runtime/fast_permission_runtime.iml" group="ZcxPremission/fast_permission_runtime" />
+      <module fileurl="file://$PROJECT_DIR$/sample/sample.iml" filepath="$PROJECT_DIR$/sample/sample.iml" group="ZcxPremission/sample" />
     </modules>
   </component>
 </project>
