@@ -95,8 +95,10 @@ public class PermissionActivityAspect extends PermissionBaseAspect {
 
             @Override
             public void onPermissionCanceled(PermissionCanceledBean bean) {
+                bindInfo(bean,context);
                 if (object instanceof PermissionListener) {
                     ((PermissionListener) object).onPermissionCanceled(bean);
+                    return;
                 }
                 String canceledKey = needPermission.permissionCanceled();
                 boolean isExecuteCanceled;
@@ -116,8 +118,10 @@ public class PermissionActivityAspect extends PermissionBaseAspect {
 
             @Override
             public void onPermissionDenied(PermissionDeniedBean bean) {
+                bindInfo(bean,context);
                 if (object instanceof PermissionListener) {
                     ((PermissionListener) object).onPermissionDenied(bean);
+                    return;
                 }
 
                 String deniedKey = needPermission.permissionDenied();

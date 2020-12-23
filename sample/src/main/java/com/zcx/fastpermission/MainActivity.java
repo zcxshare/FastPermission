@@ -7,7 +7,7 @@ import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @PermissionBefore
     public void before(final PermissionBeforeBean beforeBean) {
-        new android.support.v7.app.AlertDialog.Builder(this)
+        new androidx.appcompat.app.AlertDialog.Builder(this)
                 .setTitle("我们需要相机权限来正常拍照")
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @PermissionCanceled
     public void cancel(final PermissionCanceledBean canceledBean) {
-        new android.support.v7.app.AlertDialog.Builder(this)
+        new androidx.appcompat.app.AlertDialog.Builder(this)
                 .setTitle("我们需要权限,是否同意一下")
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @PermissionDenied
     public void denied(final PermissionDeniedBean deniedBean) {
-        new android.support.v7.app.AlertDialog.Builder(this)
+        new androidx.appcompat.app.AlertDialog.Builder(this)
                 .setTitle("我们需要权限,是否设置")
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override

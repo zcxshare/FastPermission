@@ -16,9 +16,9 @@ NeedPermission支持在所有的方法中使用和activity的类上使用,提供
   1. **@PermissionBefore**:请求权限前的操作，可以在请求权限的本类中和配置类中使用，被注解的方法的参数只能是PermissionBeforeBean
 ,与NeedPermission联合使用,通过requestBefore匹配
   1. **@PermissionCanceled**:权限被取消(用户点击禁止权限)时调用的方法,可以在请求权限的本类中和配置类中使用
-，被注解的方法的参数只能是PermissionCanceledBean,与Neddpermission联合使用,通过permissionCanceled匹配
+，被注解的方法的参数只能是PermissionCanceledBean,与NeedPermission联合使用,通过permissionCanceled匹配
   1. **@PermissionDenied**:权限被取消(用户勾选禁止后不再提示并点击禁止权限)时调用的方法,可以在请求权限的本类中和配置类中使用
-，被注解的方法的参数只能是PermissionDeniedBean,与Neddpermission联合使用,通过permissionDenied匹配
+，被注解的方法的参数只能是PermissionDeniedBean,与NeedPermission联合使用,通过permissionDenied匹配
 
 ### 使用方式
   在你的Application的onCreate方法中使用FastPermission.getInstance().init()初始化,然后在需要权限的方法

@@ -9,6 +9,9 @@ import com.zcx.fast_permission_runtime.activity.PermissionRequestActivity;
 import com.zcx.fast_permission_runtime.exception.FastPermissionException;
 import com.zcx.fast_permission_runtime.listener.PermissionListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * author:  zhouchaoxiang
@@ -63,6 +66,19 @@ public class PermissionUtils {
             throw new FastPermissionException("The permission requested is empty");
         }
         PermissionRequestActivity.start(context, permissions, requestCode, listener);
+    }
+
+    public static List<String> getNotPermissions(Context context, String... permissions){
+        List<String> notPermissions = new ArrayList<>();
+        if (permissions == null || permissions.length == 0) {
+            throw new FastPermissionException("The permission requested is empty");
+        }
+        for (String permission : permissions) {
+            if (!checkPermission(context, permission)) {
+                notPermissions.add(permission);
+            }
+        }
+        return notPermissions;
     }
 
 }

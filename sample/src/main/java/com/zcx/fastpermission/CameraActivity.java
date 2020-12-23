@@ -10,6 +10,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+
 import com.zcx.fast_permission_runtime.annotation.NeedPermission;
 import com.zcx.fast_permission_runtime.annotation.PermissionBefore;
 import com.zcx.fast_permission_runtime.bean.PermissionBeforeBean;
@@ -17,16 +20,20 @@ import com.zcx.fast_permission_runtime.bean.PermissionCanceledBean;
 import com.zcx.fast_permission_runtime.bean.PermissionDeniedBean;
 import com.zcx.fast_permission_runtime.listener.PermissionListener;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * A login screen that offers login via email/password.
  */
-@NeedPermission(value = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+@NeedPermission(value = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_BACKGROUND_LOCATION},
         requestBefore = Manifest.permission.CAMERA, permissionCanceled = Manifest.permission.CAMERA,
         permissionDenied = Manifest.permission.CAMERA, isAllowExecution = true)
 public class CameraActivity extends Activity implements PermissionListener {
     private static final String TAG = "CameraActivity";
 
     private static final int CAMERA_ID = 0;
+    private static final int requestCode = 3;
 
     private CameraPreview preview;
     private Camera camera;
@@ -68,7 +75,30 @@ public class CameraActivity extends Activity implements PermissionListener {
 
     @Override
     public void onPermissionCanceled(PermissionCanceledBean bean) {
-
+        List<String> cancelList = bean.getCancelList();
+        if (cancelList.size() == 1 && Manifest.permission.ACCESS_BACKGROUND_LOCATION.equals(cancelList.get(0))) {
+            bean.proceed();
+            mHasPermission = true;
+            initCamera();
+        } else {
+            new androidx.appcompat.app.AlertDialog.Builder(bean.getContext())
+                    .setTitle("来自配置文件,我们需要相机权限,请同意")
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            bean.againRequest();
+                        }
+                    })
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            bean.proceed();
+                        }
+                    })
+                    .show();
+        }
     }
 
     @Override
@@ -76,23 +106,30 @@ public class CameraActivity extends Activity implements PermissionListener {
 
     }
 
-    @PermissionBefore
+    @PermissionBefore(Manifest.permission.CAMERA)
     public void before(final PermissionBeforeBean beforeBean) {
-        new android.support.v7.app.AlertDialog.Builder(this)
-                .setTitle("我们需要相机权限来正常拍照")
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        beforeBean.proceed(true);
-                    }
-                })
-                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        beforeBean.proceed(false);
-                    }
-                })
-                .show();
+        List<String> notPermissions = beforeBean.getNotPermissions();
+        if (notPermissions.size() == 1 && Manifest.permission.ACCESS_BACKGROUND_LOCATION.equals(notPermissions.get(0))) {
+            beforeBean.proceed(false);
+            mHasPermission = true;
+            initCamera();
+        } else {
+            new androidx.appcompat.app.AlertDialog.Builder(this)
+                    .setTitle("我们需要相机权限来正常拍照")
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            beforeBean.proceed(true);
+                        }
+                    })
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            beforeBean.proceed(false);
+                        }
+                    })
+                    .show();
+        }
     }
 
     private void initCamera() {
@@ -140,6 +177,12 @@ public class CameraActivity extends Activity implements PermissionListener {
             camera.release();        // release the camera for other applications
             camera = null;
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.w(TAG, "onRequestPermissionsResult: requestCode:"+requestCode+"--permissions:"+ Arrays.toString(permissions) +"--grantResults:"+ Arrays.toString(grantResults));
     }
 }
 

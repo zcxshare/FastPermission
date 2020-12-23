@@ -12,11 +12,14 @@ import com.zcx.fast_permission_runtime.bean.PermissionBeforeBean;
 import com.zcx.fast_permission_runtime.bean.PermissionCanceledBean;
 import com.zcx.fast_permission_runtime.bean.PermissionDeniedBean;
 import com.zcx.fast_permission_runtime.exception.FastPermissionException;
+import com.zcx.fast_permission_runtime.util.PermissionUtils;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * author:  zhouchaoxiang
@@ -44,10 +47,12 @@ public abstract class PermissionBaseAspect {
             PermissionBefore annotation = method.getAnnotation(PermissionBefore.class);
             if (annotation != null) {
                 String value = annotation.value();
+                List<String> notPermissions = PermissionUtils.getNotPermissions(context, needPermission.value());
+                PermissionBeforeBean beforeBean = new PermissionBeforeBean(null, null, null, notPermissions);
                 if (TextUtils.isEmpty(beforeKey) && TextUtils.isEmpty(value)) {
-                    if (executeBeforeMethod(context, object, method, needPermission)) return true;
+                    if (executeBeforeMethod(beforeBean, context, object, method)) return true;
                 } else if (!TextUtils.isEmpty(beforeKey) && beforeKey.equals(value)) {
-                    if (executeBeforeMethod(context, object, method, needPermission)) return true;
+                    if (executeBeforeMethod(beforeBean, context, object, method)) return true;
                 }
             }
         }
@@ -84,26 +89,28 @@ public abstract class PermissionBaseAspect {
         return false;
     }
 
-    protected boolean executeBeforeMethod(Context context, Object object, Method method, NeedPermission needPermission) {
-        PermissionBeforeBean beforeBean = new PermissionBeforeBean(context, this, needPermission);
-        return executeMethod(beforeBean, object, method,
+    protected boolean executeBeforeMethod(PermissionBeforeBean bean, Context context, Object object, Method method) {
+        bindInfo(bean, context);
+        return executeMethod(bean, object, method,
                 "The method parameters decorated by the PermissionBefore annotation can only be the PermissionBeforeBean");
     }
 
     protected boolean executeCanceledMethod(PermissionCanceledBean bean, Context context, Object object, Method method) {
-        bean.setContext(context);
-        bean.setAspect(this);
-        bean.setNeedPermission(mNeedPermission);
+        bindInfo(bean, context);
         return executeMethod(bean, object, method,
                 "The method parameters decorated by the PermissionCanceled annotation can only be the PermissionCanceledBean");
     }
 
     protected boolean executeDeniedMethod(PermissionDeniedBean bean, Context context, Object object, Method method) {
+        bindInfo(bean, context);
+        return executeMethod(bean, object, method,
+                "The method parameters decorated by the PermissionDenied annotation can only be the PermissionDeniedBean");
+    }
+
+    protected void bindInfo(PermissionBaseBean bean, Context context) {
         bean.setContext(context);
         bean.setAspect(this);
         bean.setNeedPermission(mNeedPermission);
-        return executeMethod(bean, object, method,
-                "The method parameters decorated by the PermissionDenied annotation can only be the PermissionDeniedBean");
     }
 
     protected <B extends PermissionBaseBean> boolean executeMethod(B bean, Object object, Method method, String exceptionPrompt) {
