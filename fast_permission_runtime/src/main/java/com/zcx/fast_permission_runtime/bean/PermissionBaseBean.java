@@ -3,7 +3,7 @@ package com.zcx.fast_permission_runtime.bean;
 import android.content.Context;
 
 import com.zcx.fast_permission_runtime.annotation.NeedPermission;
-import com.zcx.fast_permission_runtime.aspect.PermissionBaseAspect;
+import com.zcx.fast_permission_runtime.interfaces.RequestPermissionHandle;
 
 
 /**
@@ -13,12 +13,14 @@ import com.zcx.fast_permission_runtime.aspect.PermissionBaseAspect;
  */
 public class PermissionBaseBean {
     private Context mContext;
-    private PermissionBaseAspect mAspect;
+    private int mRequestCode;
+    private RequestPermissionHandle mHandle;
     private NeedPermission mNeedPermission;
 
-    public PermissionBaseBean(Context context, PermissionBaseAspect aspect, NeedPermission needPermission) {
+    public PermissionBaseBean(Context context, int requestCode, RequestPermissionHandle handle, NeedPermission needPermission) {
         mContext = context;
-        mAspect = aspect;
+        mRequestCode = requestCode;
+        mHandle = handle;
         mNeedPermission = needPermission;
     }
 
@@ -30,12 +32,12 @@ public class PermissionBaseBean {
         mContext = context;
     }
 
-    public PermissionBaseAspect getAspect() {
-        return mAspect;
+    public RequestPermissionHandle getHandle() {
+        return mHandle;
     }
 
-    public void setAspect(PermissionBaseAspect aspect) {
-        mAspect = aspect;
+    public void setHandle(RequestPermissionHandle handle) {
+        mHandle = handle;
     }
 
     public NeedPermission getNeedPermission() {
@@ -48,5 +50,13 @@ public class PermissionBaseBean {
 
     public String[] getPermissions() {
         return mNeedPermission.value();
+    }
+
+    public int getRequestCode() {
+        return mRequestCode;
+    }
+
+    public void setRequestCode(int requestCode) {
+        mRequestCode = requestCode;
     }
 }

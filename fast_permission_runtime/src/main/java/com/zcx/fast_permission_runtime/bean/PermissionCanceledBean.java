@@ -3,7 +3,7 @@ package com.zcx.fast_permission_runtime.bean;
 import android.content.Context;
 
 import com.zcx.fast_permission_runtime.annotation.NeedPermission;
-import com.zcx.fast_permission_runtime.aspect.PermissionBaseAspect;
+import com.zcx.fast_permission_runtime.interfaces.RequestPermissionHandle;
 
 import java.util.List;
 
@@ -15,17 +15,17 @@ import java.util.List;
 public class PermissionCanceledBean extends PermissionBaseBean {
     private List<String> mCancelList;
 
-    public PermissionCanceledBean(Context context, PermissionBaseAspect aspect, NeedPermission needPermission, List<String> cancelList) {
-        super(context, aspect, needPermission);
+    public PermissionCanceledBean(Context context, int requestCode, RequestPermissionHandle aspect, NeedPermission needPermission, List<String> cancelList) {
+        super(context, requestCode,aspect, needPermission);
         mCancelList = cancelList;
     }
 
     public void proceed() {
-        getAspect().proceed(false);
+        getHandle().proceed(false);
     }
 
     public void againRequest() {
-        getAspect().requestPermission();
+        getHandle().proceed(true);
     }
 
     public int getRequestCode() {

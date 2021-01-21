@@ -12,13 +12,13 @@ import com.zcx.fast_permission_runtime.bean.PermissionBeforeBean;
 import com.zcx.fast_permission_runtime.bean.PermissionCanceledBean;
 import com.zcx.fast_permission_runtime.bean.PermissionDeniedBean;
 import com.zcx.fast_permission_runtime.exception.FastPermissionException;
+import com.zcx.fast_permission_runtime.interfaces.RequestPermissionHandle;
 import com.zcx.fast_permission_runtime.util.PermissionUtils;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -27,20 +27,20 @@ import java.util.List;
  * explain:
  */
 
-public abstract class PermissionBaseAspect {
+public abstract class PermissionBaseAspect implements RequestPermissionHandle {
 
     protected ProceedingJoinPoint mJoinPoint;
     protected Context mContext;
     protected Object mObject;
     protected Method[] mMethods;
     protected NeedPermission mNeedPermission;
-
+    protected String mBeforeKey;
 
     public void requestPermission() {
-        requestPermission(mContext, mJoinPoint, mNeedPermission, mObject, mMethods);
+        requestPermission(mContext, mJoinPoint, mNeedPermission, mObject, mMethods, mBeforeKey);
     }
 
-    protected abstract void requestPermission(final Context context, final ProceedingJoinPoint joinPoint, final NeedPermission needPermission, final Object object, final Method[] methods);
+    protected abstract void requestPermission(final Context context, final ProceedingJoinPoint joinPoint, final NeedPermission needPermission, final Object object, final Method[] methods, String beforeKey);
 
     protected boolean executeBefore(Context context, Object object, Method[] methods, NeedPermission needPermission, String beforeKey) {
         for (Method method : methods) {
@@ -48,7 +48,7 @@ public abstract class PermissionBaseAspect {
             if (annotation != null) {
                 String value = annotation.value();
                 List<String> notPermissions = PermissionUtils.getNotPermissions(context, needPermission.value());
-                PermissionBeforeBean beforeBean = new PermissionBeforeBean(null, null, null, notPermissions);
+                PermissionBeforeBean beforeBean = new PermissionBeforeBean(null, needPermission.requestCode(), this, null, notPermissions);
                 if (TextUtils.isEmpty(beforeKey) && TextUtils.isEmpty(value)) {
                     if (executeBeforeMethod(beforeBean, context, object, method)) return true;
                 } else if (!TextUtils.isEmpty(beforeKey) && beforeKey.equals(value)) {
@@ -109,7 +109,7 @@ public abstract class PermissionBaseAspect {
 
     protected void bindInfo(PermissionBaseBean bean, Context context) {
         bean.setContext(context);
-        bean.setAspect(this);
+        bean.setHandle(this);
         bean.setNeedPermission(mNeedPermission);
     }
 

@@ -19,6 +19,7 @@ import com.zcx.fast_permission_runtime.listener.PermissionListener;
 import com.zcx.fast_permission_runtime.util.PermissionUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PermissionRequestActivity extends Activity {
@@ -26,20 +27,31 @@ public class PermissionRequestActivity extends Activity {
     private static final String INTENT_REQUEST_CODE = "intent_request_code";
     private static final String INTENT_PERMISSIONS = "intent_permissions";
 
+    private static final String REQUEST_TYPE = "request_type";
+
+    public static final int REQUEST_TYPE_NORMAL = 1;
+    public static final int REQUEST_TYPE_INSTALL = 2;
+
     private static PermissionListener sPermissionListener;
+    private static Context sContext;
 
     private String[] mPermissions;
     private int mRequestCode;
+    private int mRequestType;
 
-    public static void start(Context context, String[] permissions, int requestCode, PermissionListener listener) {
+    public static void start(Context context, String[] permissions, int requestType, int requestCode, PermissionListener listener) {
         sPermissionListener = listener;
+        sContext = context;
         Intent intent = new Intent(context, PermissionRequestActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(INTENT_PERMISSIONS, permissions);
         intent.putExtra(INTENT_REQUEST_CODE, requestCode);
+        intent.putExtra(REQUEST_TYPE, requestType);
         context.startActivity(intent);
         if (context instanceof Activity) {
-            ((Activity) context).overridePendingTransition(0, 0);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ECLAIR) {
+                ((Activity) context).overridePendingTransition(0, 0);
+            }
         }
     }
 
@@ -63,11 +75,23 @@ public class PermissionRequestActivity extends Activity {
 
         mPermissions = getIntent().getStringArrayExtra(INTENT_PERMISSIONS);
         mRequestCode = getIntent().getIntExtra(INTENT_REQUEST_CODE, 0);
+        mRequestType = getIntent().getIntExtra(REQUEST_TYPE, REQUEST_TYPE_NORMAL);
 
+        requestPermission();
+    }
+
+    private void requestPermission() {
         if (mPermissions == null || mPermissions.length == 0) {
             throw new FastPermissionException("The permission requested is empty");
         }
+        if (mRequestType == REQUEST_TYPE_NORMAL) {
+            requestNormalPermission();
+        } else if (mRequestType == REQUEST_TYPE_INSTALL) {
+            PermissionUtils.toInstallPackageSetting(this, mRequestCode);
+        }
+    }
 
+    private void requestNormalPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (PermissionUtils.checkPermissions(this, mPermissions)) {
                 if (sPermissionListener != null) {
@@ -91,13 +115,12 @@ public class PermissionRequestActivity extends Activity {
                 if (deniedList.size() == 0) {
                     sPermissionListener.onPermissionGranted();
                 } else {
-                    PermissionDeniedBean deniedBean = new PermissionDeniedBean(null, null, null, null, deniedList);
+                    PermissionDeniedBean deniedBean = new PermissionDeniedBean(sContext, mRequestCode, null, null, null, deniedList);
                     sPermissionListener.onPermissionDenied(deniedBean);
                 }
             }
             finish();
         }
-
     }
 
     @Override
@@ -120,11 +143,27 @@ public class PermissionRequestActivity extends Activity {
             }
             if (sPermissionListener != null) {
                 if (deniedList.size() > 0) {
-                    PermissionDeniedBean deniedBean = new PermissionDeniedBean(null, null, null, cancelList, deniedList);
+                    PermissionDeniedBean deniedBean = new PermissionDeniedBean(sContext, mRequestCode, null, null, cancelList, deniedList);
                     sPermissionListener.onPermissionDenied(deniedBean);
                 } else {
-                    PermissionCanceledBean canceledBean = new PermissionCanceledBean(null, null, null, cancelList);
+                    PermissionCanceledBean canceledBean = new PermissionCanceledBean(sContext, mRequestCode, null, null, cancelList);
                     sPermissionListener.onPermissionCanceled(canceledBean);
+                }
+            }
+        }
+        finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == mRequestCode) {
+            if (sPermissionListener != null) {
+                if (resultCode == RESULT_OK) {
+                    sPermissionListener.onPermissionGranted();
+                } else {
+                    PermissionDeniedBean deniedBean = new PermissionDeniedBean(sContext, mRequestCode, null, null, null, Arrays.asList(mPermissions));
+                    sPermissionListener.onPermissionDenied(deniedBean);
                 }
             }
         }
@@ -134,14 +173,16 @@ public class PermissionRequestActivity extends Activity {
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(0, 0);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ECLAIR) {
+            overridePendingTransition(0, 0);
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         sPermissionListener = null;
+        sContext = null;
     }
-
 
 }

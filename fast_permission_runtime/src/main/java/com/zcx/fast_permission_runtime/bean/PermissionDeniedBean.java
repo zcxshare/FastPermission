@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.zcx.fast_permission_runtime.annotation.NeedPermission;
 import com.zcx.fast_permission_runtime.aspect.PermissionBaseAspect;
+import com.zcx.fast_permission_runtime.interfaces.RequestPermissionHandle;
 import com.zcx.fast_permission_runtime.util.SettingUtils;
 
 import java.util.List;
@@ -18,18 +19,18 @@ public class PermissionDeniedBean extends PermissionBaseBean {
     private List<String> mCancelList;
     private List<String> mDeniedList;
 
-    public PermissionDeniedBean(Context context, PermissionBaseAspect aspect, NeedPermission needPermission, List<String> cancelList, List<String> deniedList) {
-        super(context, aspect, needPermission);
+    public PermissionDeniedBean(Context context, int requestCode, RequestPermissionHandle aspect, NeedPermission needPermission, List<String> cancelList, List<String> deniedList) {
+        super(context, requestCode,aspect, needPermission);
         mCancelList = cancelList;
         mDeniedList = deniedList;
     }
 
     public void proceed() {
-        getAspect().proceed(false);
+        getHandle().proceed(false);
     }
 
     public void againRequest() {
-        getAspect().requestPermission();
+        getHandle().proceed(true);
     }
 
     public void toSettingActivity() {

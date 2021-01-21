@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.zcx.fast_permission_runtime.FastPermission;
 import com.zcx.fast_permission_runtime.annotation.NeedPermission;
+import com.zcx.fast_permission_runtime.bean.PermissionBeforeBean;
 import com.zcx.fast_permission_runtime.bean.PermissionCanceledBean;
 import com.zcx.fast_permission_runtime.bean.PermissionDeniedBean;
 import com.zcx.fast_permission_runtime.exception.FastPermissionException;
@@ -65,21 +66,8 @@ public class PermissionMethodAspect extends PermissionBaseAspect {
 
         Class<?> aClass = mObject.getClass();
         mMethods = aClass.getMethods();
-        String beforeKey = mNeedPermission.requestBefore();
-        boolean isExecuteBefore;
-        isExecuteBefore = executeBefore(mContext, mObject, mMethods, mNeedPermission, beforeKey);
-        if (!isExecuteBefore && !TextUtils.isEmpty(beforeKey)) {
-            Object configObject = FastPermission.getInstance().getConfigObject();
-            if (configObject != null) {
-                Class<?> aClass1 = configObject.getClass();
-                Method[] methods1 = aClass1.getMethods();
-                isExecuteBefore = executeBefore(mContext, configObject, methods1, mNeedPermission, beforeKey);
-            }
-        }
-        if (!isExecuteBefore) {
-            requestPermission(mContext, joinPoint, mNeedPermission, mObject, mMethods);
-        }
-
+        mBeforeKey = mNeedPermission.requestBefore();
+        requestPermission(mContext, joinPoint, mNeedPermission, mObject, mMethods, mBeforeKey);
     }
 
 
@@ -91,8 +79,24 @@ public class PermissionMethodAspect extends PermissionBaseAspect {
         }
     }
 
-    protected void requestPermission(final Context context, final ProceedingJoinPoint joinPoint, final NeedPermission needPermission, final Object object, final Method[] methods) {
+    protected void requestPermission(final Context context, final ProceedingJoinPoint joinPoint, final NeedPermission needPermission, final Object object, final Method[] methods, final String beforeKey) {
         PermissionUtils.requestPermissions(context, needPermission.value(), needPermission.requestCode(), new PermissionListener() {
+            @Override
+            public void onPermissionBefore(PermissionBeforeBean bean) {
+                boolean isExecuteBefore = executeBefore(mContext, mObject, mMethods, mNeedPermission, beforeKey);
+                if (!isExecuteBefore && !TextUtils.isEmpty(beforeKey)) {
+                    Object configObject = FastPermission.getInstance().getConfigObject();
+                    if (configObject != null) {
+                        Class<?> aClass1 = configObject.getClass();
+                        Method[] methods1 = aClass1.getMethods();
+                        isExecuteBefore = executeBefore(mContext, configObject, methods1, mNeedPermission, beforeKey);
+                    }
+                }
+                if (!isExecuteBefore) {
+                    bean.proceed(true);
+                }
+            }
+
             @Override
             public void onPermissionGranted() {
                 proceed(joinPoint);
